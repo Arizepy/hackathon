@@ -1,0 +1,152 @@
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+model User {
+  id           String   @id @default(uuid())
+  email        String   @unique
+  passwordHash String
+  name         String
+  role         String
+  stationId    String?
+  station      Station? @relation(fields: [stationId], references: [id])
+  createdAt    DateTime @default(now())
+}
+
+model Station {
+  id              String           @id @default(uuid())
+  name            String
+  kind            String
+  location        String
+  services        String           @default("")
+  contact         String           @default("")
+  hours           String           @default("")
+  basicCareGuide  String           @default("")
+  items           Item[]
+  users           User[]
+  restockRequests RestockRequest[]
+  govOrders       GovOrder[]
+}
+
+model Item {
+  id          String   @id @default(uuid())
+  stationId   String
+  station     Station  @relation(fields: [stationId], references: [id])
+  name        String
+  unit        String
+  qty         Int
+  threshold   Int
+  batchNumber String   @default("B-0000")
+  expiryDate  DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+model RestockRequest {
+  id        String        @id @default(uuid())
+  stationId String
+  station   Station       @relation(fields: [stationId], references: [id])
+  createdAt DateTime      @default(now())
+  lines     RestockLine[]
+}
+
+model RestockLine {
+  id               String         @id @default(uuid())
+  restockRequestId String
+  restockRequest   RestockRequest @relation(fields: [restockRequestId], references: [id])
+  name             String
+  unit             String
+  qty              Int
+}
+
+model NationalCatalogItem {
+  id              String         @id @default(uuid())
+  name            String
+  unit            String
+  nationalStock   Int
+  avgLeadTimeDays Int
+  orderLines      GovOrderLine[]
+}
+
+model GovOrder {
+  id            String             @id @default(uuid())
+  stationId     String
+  station       Station            @relation(fields: [stationId], references: [id])
+  requestedById String
+  status        String             @default("SUBMITTED")
+  createdAt     DateTime           @default(now())
+  lines         GovOrderLine[]
+  history       OrderStatusEvent[]
+}
+
+model GovOrderLine {
+  id            String              @id @default(uuid())
+  govOrderId    String
+  govOrder      GovOrder            @relation(fields: [govOrderId], references: [id])
+  catalogItemId String
+  catalogItem   NationalCatalogItem @relation(fields: [catalogItemId], references: [id])
+  qtyRequested  Int
+  qtyApproved   Int?
+}
+
+model OrderStatusEvent {
+  id         String   @id @default(uuid())
+  govOrderId String
+  govOrder   GovOrder @relation(fields: [govOrderId], references: [id])
+  status     String
+  note       String?
+  timestamp  DateTime @default(now())
+}
+
+model Facility {
+  id        String   @id @default(uuid())
+  name      String
+  location  String
+  isOpen    Boolean  @default(true)
+  openTime  String
+  closeTime String
+  contact   String?
+  notice    String?
+}
+
+model TrainingModule {
+  id              String @id @default(uuid())
+  title           String
+  durationMinutes Int
+  description     String
+}
+
+model TrainingAssignment {
+  id          Int    @id @default(autoincrement())
+  staffName   String
+  moduleTitle String
+  status      String // 'assigned', 'in_progress', 'completed', 'certified'
+}
+
+model Shift {
+  id                String   @id @default(uuid())
+  date              String // e.g. "YYYY-MM-DD"
+  staffName         String
+  shiftType         String // "day" | "evening" | "night"
+  startTime         String // e.g. "08:00"
+  endTime           String // e.g. "16:00"
+  notes             String?
+  nightDifferential Boolean  @default(false)
+}
+
+model Patient {
+  id             Int     @id @default(autoincrement())
+  name           String
+  gender         String
+  dateOfBirth    String // e.g. "YYYY-MM-DD"
+  bloodType      String?
+  phone          String?
+  address        String?
+  allergies      String?
+  medicalHistory String?
+  currentMeds    String?
+}
