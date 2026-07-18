@@ -81,7 +81,7 @@ async function main() {
     data: {
       email: "nurse@healthlinkgh.demo",
       passwordHash,
-      name: "Abigail Mensah",
+      name: "Akosua Mansa",
       role: Role.NURSE,
       stationId: kibera.id,
     },
@@ -91,7 +91,7 @@ async function main() {
     data: {
       email: "doctor@healthlinkgh.demo",
       passwordHash,
-      name: "Dr. Kwesi Appiah",
+      name: "Dr. Kofi Mensah",
       role: Role.DOCTOR,
       stationId: riverside.id,
     },
@@ -111,7 +111,7 @@ async function main() {
     data: {
       email: "pharmacy@healthlinkgh.demo",
       passwordHash,
-      name: "Chief Pharmacist Yao",
+      name: "Pharmacist Yaw Osei",
       role: Role.PHARMACY,
       stationId: null, // Pharmacy scope nationwide
     },
@@ -269,11 +269,11 @@ async function main() {
   }
 
   const assignments = [
-    { staffName: "Abigail Mensah", moduleTitle: "First Aid Basics & Wound Care", status: "certified" },
-    { staffName: "Abigail Mensah", moduleTitle: "Pediatric Hydration & Fever Management", status: "completed" },
-    { staffName: "Dr. Kwesi Appiah", moduleTitle: "Emergency Triage Procedures", status: "certified" },
-    { staffName: "Emmanuel Boateng", moduleTitle: "First Aid Basics & Wound Care", status: "in_progress" },
-    { staffName: "Mercy Owusu", moduleTitle: "Pediatric Hydration & Fever Management", status: "assigned" },
+    { staffName: "Akosua Mansa", moduleTitle: "First Aid Basics & Wound Care", status: "certified" },
+    { staffName: "Akosua Mansa", moduleTitle: "Pediatric Hydration & Fever Management", status: "completed" },
+    { staffName: "Dr. Kofi Mensah", moduleTitle: "Emergency Triage Procedures", status: "certified" },
+    { staffName: "Ekow Boateng", moduleTitle: "First Aid Basics & Wound Care", status: "in_progress" },
+    { staffName: "Afia Owusu", moduleTitle: "Pediatric Hydration & Fever Management", status: "assigned" },
   ];
   for (const ass of assignments) {
     await prisma.trainingAssignment.create({ data: ass });
@@ -283,12 +283,12 @@ async function main() {
 
   // 9. Seed Shifts (Module 6)
   const shifts = [
-    { date: "2026-07-18", staffName: "Abigail Mensah", shiftType: "day", startTime: "08:00", endTime: "16:00", notes: "Kibera main shift", nightDifferential: false },
-    { date: "2026-07-18", staffName: "Emmanuel Boateng", shiftType: "evening", startTime: "16:00", endTime: "22:00", notes: "Evening coverage", nightDifferential: false },
-    { date: "2026-07-18", staffName: "Dr. Kwesi Appiah", shiftType: "night", startTime: "22:00", endTime: "08:00", notes: "Emergency doctor on-call", nightDifferential: true },
+    { date: "2026-07-18", staffName: "Akosua Mansa", shiftType: "day", startTime: "08:00", endTime: "16:00", notes: "Kibera main shift", nightDifferential: false },
+    { date: "2026-07-18", staffName: "Ekow Boateng", shiftType: "evening", startTime: "16:00", endTime: "22:00", notes: "Evening coverage", nightDifferential: false },
+    { date: "2026-07-18", staffName: "Dr. Kofi Mensah", shiftType: "night", startTime: "22:00", endTime: "08:00", notes: "Emergency doctor on-call", nightDifferential: true },
     
-    { date: "2026-07-19", staffName: "Mercy Owusu", shiftType: "day", startTime: "08:00", endTime: "16:00", notes: "Regular morning duty", nightDifferential: false },
-    { date: "2026-07-19", staffName: "Dr. Kwesi Appiah", shiftType: "night", startTime: "22:00", endTime: "08:00", notes: "Rotational night-shift", nightDifferential: true },
+    { date: "2026-07-19", staffName: "Afia Owusu", shiftType: "day", startTime: "08:00", endTime: "16:00", notes: "Regular morning duty", nightDifferential: false },
+    { date: "2026-07-19", staffName: "Dr. Kofi Mensah", shiftType: "night", startTime: "22:00", endTime: "08:00", notes: "Rotational night-shift", nightDifferential: true },
   ];
   for (const sh of shifts) {
     await prisma.shift.create({ data: sh });
